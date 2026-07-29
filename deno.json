@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --watch main.ts",
+    "start": "deno run --allow-net --allow-env main.ts",
+    "check": "deno check main.ts",
+    "test": "deno test --allow-net --allow-run --allow-env tests/",
+    "test:unit": "deno test tests/unit/",
+    "test:e2e": "deno test --allow-net --allow-run --allow-env tests/e2e/"
+  },
+  "imports": {
+    "@modelcontextprotocol/server": "npm:@modelcontextprotocol/server@^2.0.0",
+    "@modelcontextprotocol/hono": "npm:@modelcontextprotocol/hono@^2.0.0",
+    "zod": "npm:zod@^4.2.0",
+    "deno-dom": "jsr:@b-fuze/deno-dom@^0.1",
+    "@mozilla/readability": "npm:@mozilla/readability@^0.6.0",
+    "@std/assert": "jsr:@std/assert@^1"
+  }
+}
