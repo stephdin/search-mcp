@@ -1,8 +1,8 @@
 {
   "version": "0.1.0",
   "tasks": {
-    "dev": "deno run --allow-net --allow-env --watch main.ts",
-    "start": "deno run --allow-net --allow-env main.ts",
+    "dev": "deno run --allow-net --allow-env --unstable-no-legacy-abort --watch main.ts",
+    "start": "deno run --allow-net --allow-env --unstable-no-legacy-abort main.ts",
     "check": "deno check main.ts",
     "test": "deno test --allow-net --allow-run --allow-env tests/",
     "test:unit": "deno test tests/unit/",

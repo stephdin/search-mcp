@@ -86,7 +86,13 @@ Deno.test("e2e", async (t) => {
   // ---------------------------------------------------------------------------
 
   const cmd = new Deno.Command("deno", {
-    args: ["run", "--allow-net", "--allow-env", "main.ts"],
+    args: [
+      "run",
+      "--allow-net",
+      "--allow-env",
+      "--unstable-no-legacy-abort",
+      "main.ts",
+    ],
     cwd: import.meta.dirname + "/../..",
     env: {
       MCP_PORT: String(PORT),
