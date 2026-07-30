@@ -6,9 +6,8 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { searchDdg } from "../lib/ddg.ts";
 import { toolError, frameUntrusted } from "../lib/tool.ts";
 import { log } from "../lib/log.ts";
+import { MAX_RESULTS, DEFAULT_MAX_RESULTS } from "../lib/config.ts";
 
-const MAX_RESULTS = 25;
-const DEFAULT_MAX_RESULTS = 10;
 const MAX_RESULTS_DESC = `Maximum results to return (1-${MAX_RESULTS}, default ${DEFAULT_MAX_RESULTS})`;
 
 export function registerSearchTool(server: McpServer): void {

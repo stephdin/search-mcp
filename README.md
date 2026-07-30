@@ -70,6 +70,7 @@ Responses come back as SSE `message` events.
 ```
 main.ts              entrypoint: server, transport, HTTP wiring
 lib/http.ts          fetch with timeout, byte ceiling, host/redirect validation
+lib/config.ts        shared constants (timeouts, limits, caps)
 lib/ddg.ts           DuckDuckGo search (POST + parse)
 lib/article.ts       HTML to clean text via Readability + fallback
 lib/content.ts       content-type dispatch and truncation
@@ -90,8 +91,8 @@ Add a new tool by dropping a file under `tools/` and registering it from
   high-volume use.
 - `fetch_url` only allows hostnames (no raw IP addresses). Redirects are
   followed manually (max 5) and every hop is validated. Downloads are capped
-  at 2 MiB and output is trimmed to 50k characters to stay friendly to model
-  context windows. Tweak the constants in `tools/fetch_url.ts` if needed.
+  at 2 MiB and output is trimmed to 50k characters (including the injected
+  links section) to stay friendly to model context windows. Tweak the constants in `lib/config.ts` if needed.
 - The host guard does not resolve DNS. A hostname that points to a private IP
   will pass. For a personal tool listening on localhost this is fine.
 - HTML extraction uses `@mozilla/readability` (Firefox Reader Mode) for

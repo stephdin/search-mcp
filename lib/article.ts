@@ -6,6 +6,7 @@
 
 import { DOMParser, type Element, type HTMLDocument } from "deno-dom";
 import { Readability } from "@mozilla/readability";
+import { MAX_COLLECTED_LINKS } from "./config.ts";
 
 const READABILITY_MIN_CHARS = 500; // below this, probably not a real article
 
@@ -126,6 +127,7 @@ function collectLinks(doc: HTMLDocument): string {
   const links: string[] = [];
 
   for (const a of doc.querySelectorAll("a[href]")) {
+    if (links.length >= MAX_COLLECTED_LINKS) break;
     const href = (a.getAttribute("href") ?? "").trim();
     if (!href || href.startsWith("javascript:") || href.startsWith("#")) {
       continue;

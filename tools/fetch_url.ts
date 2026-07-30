@@ -8,9 +8,7 @@ import { fetchText, type FetchResult } from "../lib/http.ts";
 import { renderText, truncate } from "../lib/content.ts";
 import { toolError, frameUntrusted } from "../lib/tool.ts";
 import { log } from "../lib/log.ts";
-
-const FETCH_TIMEOUT_MS = 30_000;
-const FETCH_MAX_BYTES = 2_000_000;
+import { FETCH_TIMEOUT_MS, FETCH_MAX_BYTES } from "../lib/config.ts";
 
 export function registerFetchUrlTool(server: McpServer): void {
   server.registerTool(

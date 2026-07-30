@@ -4,8 +4,7 @@
 // Also handles character truncation via `truncate`.
 
 import { extractArticle } from "./article.ts";
-
-export const OUTPUT_CHAR_LIMIT = 50_000;
+import { OUTPUT_CHAR_LIMIT } from "./config.ts";
 
 /** Turn a response body into text ready for the LLM, or null for binary. */
 export function renderText(contentType: string, body: string): string | null {

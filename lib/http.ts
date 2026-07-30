@@ -2,9 +2,9 @@
 // following (with per-hop host validation), and a hostname/IP guard that
 // blocks raw addresses and localhost.
 
+import { FETCH_MAX_BYTES, MAX_REDIRECTS } from "./config.ts";
+
 export const DEFAULT_TIMEOUT_MS = 15_000;
-export const DEFAULT_MAX_BYTES = 2_000_000;
-const MAX_REDIRECTS = 5;
 
 export interface FetchResult {
   /** Final URL after redirects. */
@@ -43,7 +43,7 @@ export async function fetchText(
 ): Promise<FetchResult> {
   const {
     timeoutMs = DEFAULT_TIMEOUT_MS,
-    maxBytes = DEFAULT_MAX_BYTES,
+    maxBytes = FETCH_MAX_BYTES,
     method = "GET",
     headers = {},
   } = opts;
