@@ -120,14 +120,14 @@ function convertBreaks(doc: HTMLDocument): void {
   }
 }
 
-/** Collect <a href> links from the document and return a "Links on this page"
- * section, or an empty string if there are none. */
+/** Collect <a href> links from the document, sorted by relevance, and return
+ * a "Links on this page" section (empty string if none found). */
 function collectLinks(doc: HTMLDocument): string {
   const seen = new Set<string>();
-  const links: string[] = [];
+  const entries: { label: string; href: string; score: number }[] = [];
 
   for (const a of doc.querySelectorAll("a[href]")) {
-    if (links.length >= MAX_COLLECTED_LINKS) break;
+    if (entries.length >= MAX_COLLECTED_LINKS) break;
     const href = (a.getAttribute("href") ?? "").trim();
     if (!href || href.startsWith("javascript:") || href.startsWith("#")) {
       continue;
@@ -136,11 +136,39 @@ function collectLinks(doc: HTMLDocument): string {
     seen.add(href);
 
     const label = a.textContent?.replace(/\s+/g, " ").trim() ?? "";
-    links.push(label ? `${label}: ${href}` : href);
+    entries.push({ label, href, score: linkScore(a) });
   }
 
-  if (links.length === 0) return "";
-  return "\n\nLinks on this page:\n" + links.map((l) => `- ${l}`).join("\n");
+  if (entries.length === 0) return "";
+
+  // Sort by score descending; JS stable sort preserves DOM order for ties.
+  entries.sort((a, b) => b.score - a.score);
+
+  const lines = entries.map((e) =>
+    e.label ? `${e.label}: ${e.href}` : e.href,
+  );
+  return "\n\nLinks on this page:\n" + lines.map((l) => `- ${l}`).join("\n");
+}
+
+// Higher score = more likely to be a content link rather than boilerplate.
+const CONTAINER_SCORE: [string, number][] = [
+  ["main", 3],
+  ["article", 3],
+  ["section", 2],
+  ["div", 2],
+  ["p", 2],
+  ["li", 2],
+  ["nav", 1],
+  ["header", 1],
+  ["footer", 0],
+  ["aside", 0],
+];
+
+function linkScore(a: Element): number {
+  for (const [tag, score] of CONTAINER_SCORE) {
+    if (a.closest(tag)) return score;
+  }
+  return 2; // default: somewhere in <body>, treat as content
 }
 
 // Collapse runs of spaces and tabs; normalize newlines to at most two in a row.
