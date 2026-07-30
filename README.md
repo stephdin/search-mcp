@@ -97,9 +97,10 @@ Add a new tool by dropping a file under `tools/` and registering it from
   will pass. For a personal tool listening on localhost this is fine.
 - HTML extraction uses `@mozilla/readability` (Firefox Reader Mode) for
   articles and a deno-dom tag-strip fallback for content Readability doesn't
-  see as an article. `<br>` tags are converted to line breaks, and all `<a
-href>` links on the page are collected and appended as a "Links on this
-  page" section so the model can follow them. See `lib/article.ts`.
+  see as an article. `<br>` tags are converted to line breaks, and up to 20
+  `<a href>` links from the page are collected, ranked by relevance (content
+  links first, nav/footer last), and appended as a "Links on this page"
+  section so the model can follow them. See `lib/article.ts`.
 
 ## Security: prompt injection
 
